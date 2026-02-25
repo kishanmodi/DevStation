@@ -48,7 +48,8 @@ const RegexTester = React.lazy(() => import('../features/utils/RegexTester').the
 const LoremIpsum = React.lazy(() => import('../features/utils/LoremIpsum').then(m => ({ default: m.LoremIpsum })));
 const K8sTool = React.lazy(() => import('../features/k8s/K8sTool').then(m => ({ default: m.K8sTool })));
 const DiagramCreator = React.lazy(() => import('../features/diagrams/DiagramCreator').then(m => ({ default: m.DiagramCreator })));
-const MdToPdf = React.lazy(() => import('../features/utils/MdToPdf').then(m => ({ default: m.MdToPdf })));
+import { MdToPdf as MdToPdfComponent } from '../features/utils/MdToPdf';
+const MdToPdf = MdToPdfComponent; // not lazily loaded to avoid fetch failures
 const Whiteboard = React.lazy(() => import('../features/utils/Whiteboard').then(m => ({ default: m.Whiteboard })));
 const ChartBuilder = React.lazy(() => import('../features/utils/ChartBuilder').then(m => ({ default: m.ChartBuilder })));
 const FlowBuilder = React.lazy(() => import('../features/diagrams/FlowBuilder').then(m => ({ default: m.FlowBuilder })));

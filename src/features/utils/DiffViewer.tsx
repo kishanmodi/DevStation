@@ -15,20 +15,22 @@ const LANGUAGES = [
 ];
 
 export const DiffViewer: React.FC = () => {
-  const [original, setOriginal] = useState('');
-  const [modified, setModified] = useState('');
+  const originalRef = React.useRef<any>(null);
+  const modifiedRef = React.useRef<any>(null);
   const [language, setLanguage] = useState('javascript');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(modified);
+    if (modifiedRef.current) {
+      navigator.clipboard.writeText(modifiedRef.current.getValue());
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleClear = () => {
-    setOriginal('');
-    setModified('');
+    if (originalRef.current) originalRef.current.setValue('');
+    if (modifiedRef.current) modifiedRef.current.setValue('');
   };
 
   return (
@@ -63,7 +65,7 @@ export const DiffViewer: React.FC = () => {
           </button>
           <button
             onClick={handleCopy}
-            disabled={!modified}
+            disabled={!(modifiedRef.current && modifiedRef.current.getValue())}
             className={cn(
               "flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all",
               copied ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" : "bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700"
@@ -79,16 +81,12 @@ export const DiffViewer: React.FC = () => {
         <DiffEditor
           height="100%"
           language={language}
-          original={original}
-          modified={modified}
+          original=""
+          modified=""
           theme="vs-dark"
           onMount={(editor) => {
-            editor.getOriginalEditor().onDidChangeModelContent(() => {
-              setOriginal(editor.getOriginalEditor().getValue());
-            });
-            editor.getModifiedEditor().onDidChangeModelContent(() => {
-              setModified(editor.getModifiedEditor().getValue());
-            });
+            originalRef.current = editor.getOriginalEditor();
+            modifiedRef.current = editor.getModifiedEditor();
           }}
           options={{
             minimap: { enabled: false },
@@ -97,6 +95,7 @@ export const DiffViewer: React.FC = () => {
             renderSideBySide: true,
             automaticLayout: true,
             padding: { top: 16, bottom: 16 },
+            originalEditable: true,
           }}
         />
       </div>

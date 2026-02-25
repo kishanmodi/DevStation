@@ -41,16 +41,56 @@ npm run build    # outputs optimized files to `dist/`
 
 > **Printing/Exporting PDF**
 >
-> The markdown tool offers two ways to get a PDF:
+> The markdown tool now uses a manual flow built from `html2canvas` + `jsPDF`.
+> Instead of relying on the monolithic `html2pdf.js` bundle (which had trouble
+> parsing Tailwind’s `oklch` colours), the export works by:
 >
-> * **Download PDF** – converts the preview into a file using `html2pdf.js` and
->   saves it directly; works in any browser environment.
+> 1. cloning the preview and stripping all CSS classes,
+> 2. rendering the clone to an off‑screen `<canvas>` using `html2canvas`, and
+> 3. embedding the resulting image in a PDF document with `jsPDF`.
+>
+> This approach produces a faithful snapshot of the preview, avoids screen
+> flicker, and completely sidesteps the previous colour‑function errors.  When
+> you click **Download PDF** you'll be asked for a filename (the `.pdf` extension
+> is added automatically).
+>
 > * **Print** – opens the browser's print dialog (`window.print()`), so you can
 >   choose “Save as PDF” or send to a printer.
 >
 > In some cloud preview environments (Codespaces, GitHub etc.) the print dialog is
 > disabled. If the “Print” button appears to do nothing, use the **Download PDF**
 > option or run the app locally.
+>
+> **PDF libraries loaded from CDN** – the download button injects script tags
+> for `html2canvas` and `jsPDF` from jsDelivr at runtime. This avoids the local
+> dev server 504s that occurred when Vite attempted to serve those large
+> dependencies from `/node_modules/.vite/deps`. The trade‑off is that export
+> won’t work offline without the CDN, but the application bundle itself stays
+> small. If you later decide to bundle the libraries, restore the static
+> imports or configure manual chunks.
+
+> **Diff Viewer**
+>
+> The diff tool now lets you type in **both** sides of the editor (the left pane
+> is no longer read‑only) and updates are handled directly by Monaco rather than
+> via React state, so typing feels smooth and instantaneous.
+>
+> Occasionally you may see the following error in the console when switching
+> away from the diff tab or clearing the editors:
+>
+> ```
+> Error: TextModel got disposed before DiffEditorWidget model got reset
+> ```
+>
+> This is a known Monaco bug that occurs when the editor disposes its models
+> during unmount; it does not indicate a problem with the application and can be
+> safely ignored. The UI should continue to function normally.
+> **Diff Viewer**
+>
+> The diff tool uses Monaco’s `DiffEditor` and both sides are editable – you can
+> type in either the original or modified pane. Use the selector at the top to
+> choose the language for syntax highlighting, and the clear/copy buttons to
+> manage the contents.
 
 
 ### Configuration
