@@ -10,3 +10,11 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+// once the app is up we can remove the static mobile warning (if it still
+// exists). we do this after rendering rather than on DOMContentLoaded so that
+// the message stays visible until react has actually taken over.
+const splash = document.getElementById('mobile-warning');
+if (splash) {
+  splash.style.display = 'none';
+}

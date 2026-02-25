@@ -111,25 +111,13 @@ export const LayoutMain: React.FC = () => {
     toggleSidebar 
   } = useAppStore();
 
-  // detect small screens and show a warning instead of the full app
-  const [isMobile, setIsMobile] = React.useState(false);
-  React.useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  // For small screens we rely on CSS rather than JavaScript –
+  // the `md:hidden`/`md:flex` utilities will show a simple warning
+  // while still allowing the app to render in the DOM (hidden) so
+  // hydration stays smooth and there’s no jitter when the bundle loads.
 
-  if (isMobile) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-zinc-900 text-zinc-50 p-4 text-center">
-        <p className="text-lg">
-          This application is designed for desktop screens.
-          Please open it on a larger device or resize your browser.
-        </p>
-      </div>
-    );
-  }
+  // NOTE: old mobile-detection state was removed; we no longer
+  // conditionally return early.
 
   useEffect(() => {
     document.documentElement.classList.add('dark');
@@ -184,7 +172,17 @@ export const LayoutMain: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-zinc-950 text-zinc-50 font-sans transition-colors duration-300">
+    <>
+      {/* static warning for phone-sized viewports */}
+      <div className="md:hidden flex items-center justify-center h-screen bg-zinc-900 text-zinc-50 p-4 text-center">
+        <p className="text-lg">
+          This application is designed for desktop screens.
+          Please open it on a larger device or resize your browser.
+        </p>
+      </div>
+
+      {/* actual desktop UI; hidden on small screens */}
+      <div className="hidden md:flex h-screen w-full overflow-hidden bg-zinc-950 text-zinc-50 font-sans transition-colors duration-300">
       {/* Sidebar */}
       <aside 
         style={{ width: sidebarOpen ? 240 : 64 }}
@@ -325,5 +323,6 @@ export const LayoutMain: React.FC = () => {
         </div>
       </main>
     </div>
+    </>
   );
 };

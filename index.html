@@ -7,9 +7,9 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <style>
       /* show a quick message on mobile screens while the React bundle is loading */
-      #root .mobile-message { display: none; }
+      #mobile-warning { display: none; }
       @media (max-width: 767px) {
-        #root .mobile-message {
+        #mobile-warning {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -25,12 +25,20 @@
     </style>
   </head>
   <body>
-    <div id="root">
-      <div class="mobile-message">
-        This application is designed for desktop screens.
-        Please open it on a larger device or resize your browser.
-      </div>
+    <!-- static mobile warning shown until React takes over -->
+    <div id="mobile-warning" class="mobile-message">
+      This application is designed for desktop screens.
+      Please open it on a larger device or resize your browser.
     </div>
+
+    <div id="root"></div>
+    <script>
+      // hide the warning as soon as the JS bundle has run
+      window.addEventListener('DOMContentLoaded', () => {
+        const el = document.getElementById('mobile-warning');
+        if (el) el.style.display = 'none';
+      });
+    </script>
     <script type="module" src="src/main.tsx"></script>
   </body>
 </html>
