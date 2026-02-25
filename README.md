@@ -49,15 +49,6 @@ npm run build    # outputs optimized files to `dist/`
 
 ---
 
-## Customizing Title/Favicon
-
-The HTML template is in `index.html`. Update the `<title>` tag and add a `<link rel="icon" ...>` pointing to a favicon file in `public/`:
-
-```html
-<title>DevStation</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-```
-
 Feel free to replace `favicon.svg` with any valid image (ICO/PNG/SVG).
 
 ---
