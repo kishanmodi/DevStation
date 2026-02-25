@@ -1,18 +1,11 @@
-import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(err => {
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
+console.log("JS STARTING");
+document.body.style.backgroundColor = "blue";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+const root = createRoot(document.getElementById('root')!);
+root.render(
+  <div style={{ background: 'green', color: 'white', padding: '50px' }}>
+    <h1>REACT IS RENDERING</h1>
+  </div>
 );

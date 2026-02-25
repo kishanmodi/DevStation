@@ -21,26 +21,38 @@ import {
   Terminal,
   Split,
   Trash2,
-  Clock
+  Clock,
+  Cloud,
+  Share2,
+  FileDown,
+  Type,
+  MonitorOff,
+  Palette,
+  BarChart,
+  Network
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { motion, AnimatePresence } from 'motion/react';
 
-// Feature Components (Lazy loaded or imported)
-import { HashNotes } from '../features/notes/HashNotes';
-import { CodeFormatter } from '../features/formatter/CodeFormatter';
-import { JsonToolkit } from '../features/json/JsonToolkit';
-import { HttpRequestBuilder } from '../features/http/HttpRequestBuilder';
-import { SecurityTools } from '../features/security/SecurityTools';
-import { TimeTools } from '../features/utils/TimeTools';
-import { GitHelpers } from '../features/git/GitHelpers';
-import { TextUtils } from '../features/utils/TextUtils';
-import { ResponsiveTester } from '../features/utils/ResponsiveTester';
-import { EnvEditor } from '../features/env/EnvEditor';
-import { JwtLab } from '../features/security/JwtLab';
-import { LogViewer } from '../features/logs/LogViewer';
-import { DiffViewer } from '../features/utils/DiffViewer';
-import { RegexTester } from '../features/utils/RegexTester';
+// Feature Components (Lazy loaded)
+const HashNotes = React.lazy(() => import('../features/notes/HashNotes').then(m => ({ default: m.HashNotes })));
+const CodeFormatter = React.lazy(() => import('../features/formatter/CodeFormatter').then(m => ({ default: m.CodeFormatter })));
+const JsonToolkit = React.lazy(() => import('../features/json/JsonToolkit').then(m => ({ default: m.JsonToolkit })));
+const HttpRequestBuilder = React.lazy(() => import('../features/http/HttpRequestBuilder').then(m => ({ default: m.HttpRequestBuilder })));
+const TimeTools = React.lazy(() => import('../features/utils/TimeTools').then(m => ({ default: m.TimeTools })));
+const GitHelpers = React.lazy(() => import('../features/git/GitHelpers').then(m => ({ default: m.GitHelpers })));
+const ResponsiveTester = React.lazy(() => import('../features/utils/ResponsiveTester').then(m => ({ default: m.ResponsiveTester })));
+const EnvEditor = React.lazy(() => import('../features/env/EnvEditor').then(m => ({ default: m.EnvEditor })));
+const LogViewer = React.lazy(() => import('../features/logs/LogViewer').then(m => ({ default: m.LogViewer })));
+const DiffViewer = React.lazy(() => import('../features/utils/DiffViewer').then(m => ({ default: m.DiffViewer })));
+const RegexTester = React.lazy(() => import('../features/utils/RegexTester').then(m => ({ default: m.RegexTester })));
+const LoremIpsum = React.lazy(() => import('../features/utils/LoremIpsum').then(m => ({ default: m.LoremIpsum })));
+const K8sTool = React.lazy(() => import('../features/k8s/K8sTool').then(m => ({ default: m.K8sTool })));
+const DiagramCreator = React.lazy(() => import('../features/diagrams/DiagramCreator').then(m => ({ default: m.DiagramCreator })));
+const MdToPdf = React.lazy(() => import('../features/utils/MdToPdf').then(m => ({ default: m.MdToPdf })));
+const Whiteboard = React.lazy(() => import('../features/utils/Whiteboard').then(m => ({ default: m.Whiteboard })));
+const ChartBuilder = React.lazy(() => import('../features/utils/ChartBuilder').then(m => ({ default: m.ChartBuilder })));
+const FlowBuilder = React.lazy(() => import('../features/diagrams/FlowBuilder').then(m => ({ default: m.FlowBuilder })));
+const JwtLab = React.lazy(() => import('../features/security/JwtLab').then(m => ({ default: m.JwtLab })));
 
 const TOOL_ICONS: Record<ToolId, React.ReactNode> = {
   notes: <StickyNote size={18} />,
@@ -55,6 +67,13 @@ const TOOL_ICONS: Record<ToolId, React.ReactNode> = {
   frontend: <Layout size={18} />,
   system: <Split size={18} />,
   time: <Clock size={18} />,
+  k8s: <Cloud size={18} />,
+  diagram: <Share2 size={18} />,
+  md2pdf: <FileDown size={18} />,
+  lorem: <Type size={18} />,
+  whiteboard: <Palette size={18} />,
+  charts: <BarChart size={18} />,
+  flow: <Network size={18} />,
 };
 
 const TOOL_NAMES: Record<ToolId, string> = {
@@ -70,6 +89,13 @@ const TOOL_NAMES: Record<ToolId, string> = {
   frontend: 'Responsive',
   system: 'Diff Viewer',
   time: 'Time Tools',
+  k8s: 'Kubernetes',
+  diagram: 'Diagrams',
+  md2pdf: 'MD to PDF',
+  lorem: 'Lorem Ipsum',
+  whiteboard: 'Whiteboard',
+  charts: 'Chart Builder',
+  flow: 'Flow Builder',
 };
 
 export const LayoutMain: React.FC = () => {
@@ -120,6 +146,13 @@ export const LayoutMain: React.FC = () => {
       case 'system': return <DiffViewer key={tab.id} />;
       case 'utils': return <RegexTester key={tab.id} />;
       case 'time': return <TimeTools key={tab.id} />;
+      case 'k8s': return <K8sTool key={tab.id} />;
+      case 'diagram': return <DiagramCreator key={tab.id} />;
+      case 'md2pdf': return <MdToPdf key={tab.id} />;
+      case 'lorem': return <LoremIpsum key={tab.id} />;
+      case 'whiteboard': return <Whiteboard key={tab.id} />;
+      case 'charts': return <ChartBuilder key={tab.id} />;
+      case 'flow': return <FlowBuilder key={tab.id} />;
       default: return (
         <div className="flex flex-col items-center justify-center h-full text-zinc-500">
           <Wrench size={48} className="mb-4 opacity-20" />
@@ -132,10 +165,9 @@ export const LayoutMain: React.FC = () => {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-zinc-950 text-zinc-50 font-sans transition-colors duration-300">
       {/* Sidebar */}
-      <motion.aside 
-        initial={false}
-        animate={{ width: sidebarOpen ? 240 : 64 }}
-        className="flex flex-col border-r border-zinc-800 bg-zinc-900/50 backdrop-blur-xl"
+      <aside 
+        style={{ width: sidebarOpen ? 240 : 64 }}
+        className="flex flex-col border-r border-zinc-800 bg-zinc-900/50 backdrop-blur-xl transition-all duration-300"
       >
         <div className="flex items-center h-14 px-4 border-b border-zinc-800">
           <div className="flex items-center gap-3 overflow-hidden">
@@ -175,7 +207,7 @@ export const LayoutMain: React.FC = () => {
             {sidebarOpen && <span className="text-sm font-medium">Collapse</span>}
           </button>
         </div>
-      </motion.aside>
+      </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -210,8 +242,7 @@ export const LayoutMain: React.FC = () => {
                   <X size={12} />
                 </button>
                 {tab.active && (
-                  <motion.div 
-                    layoutId="activeTabIndicator"
+                  <div 
                     className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-indigo-500 z-10"
                   />
                 )}
@@ -233,18 +264,19 @@ export const LayoutMain: React.FC = () => {
 
         {/* Workspace */}
         <div className="flex-1 relative overflow-hidden">
-          <AnimatePresence mode="wait">
             {activeTab ? (
-              <motion.div
+              <div
                 key={activeTab.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
                 className="h-full w-full"
               >
-                {renderTool(activeTab)}
-              </motion.div>
+                <React.Suspense fallback={
+                  <div className="flex items-center justify-center h-full">
+                    <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                }>
+                  {renderTool(activeTab)}
+                </React.Suspense>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-zinc-500 space-y-6">
                 <div className="w-20 h-20 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shadow-2xl">
@@ -269,7 +301,6 @@ export const LayoutMain: React.FC = () => {
                 </div>
               </div>
             )}
-          </AnimatePresence>
         </div>
       </main>
     </div>

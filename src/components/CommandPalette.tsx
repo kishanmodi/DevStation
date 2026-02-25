@@ -14,10 +14,16 @@ import {
   Layout,
   Command,
   Split,
-  Clock
+  Clock,
+  Cloud,
+  Share2,
+  FileDown,
+  Type,
+  Palette,
+  BarChart,
+  Network
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { motion, AnimatePresence } from 'motion/react';
 
 const TOOLS: { id: ToolId; label: string; icon: any }[] = [
   { id: 'notes', label: 'Hash Notes', icon: StickyNote },
@@ -32,6 +38,13 @@ const TOOLS: { id: ToolId; label: string; icon: any }[] = [
   { id: 'frontend', label: 'Responsive', icon: Layout },
   { id: 'system', label: 'Diff Viewer', icon: Split },
   { id: 'time', label: 'Time Tools', icon: Clock },
+  { id: 'k8s', label: 'Kubernetes', icon: Cloud },
+  { id: 'diagram', label: 'Diagrams', icon: Share2 },
+  { id: 'md2pdf', label: 'MD to PDF', icon: FileDown },
+  { id: 'lorem', label: 'Lorem Ipsum', icon: Type },
+  { id: 'whiteboard', label: 'Whiteboard', icon: Palette },
+  { id: 'charts', label: 'Chart Builder', icon: BarChart },
+  { id: 'flow', label: 'Flow Builder', icon: Network },
 ];
 
 export const CommandPalette: React.FC = () => {
@@ -96,20 +109,14 @@ export const CommandPalette: React.FC = () => {
   };
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
         <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             onClick={handleClose}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
           />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+          <div
             className="fixed top-[20%] left-1/2 -translate-x-1/2 w-full max-w-xl bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl z-[51] overflow-hidden"
           >
             <div className="flex items-center px-4 py-3 border-b border-zinc-800">
@@ -160,9 +167,9 @@ export const CommandPalette: React.FC = () => {
               </div>
               <span>DevStation v1.0</span>
             </div>
-          </motion.div>
+          </div>
         </>
       )}
-    </AnimatePresence>
+    </>
   );
 };

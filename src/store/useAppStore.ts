@@ -13,7 +13,14 @@ export type ToolId =
   | 'utils'
   | 'frontend'
   | 'system'
-  | 'time';
+  | 'time'
+  | 'k8s'
+  | 'diagram'
+  | 'md2pdf'
+  | 'lorem'
+  | 'whiteboard'
+  | 'charts'
+  | 'flow';
 
 export interface Tab {
   id: string;

@@ -18,13 +18,5 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          monaco: ['@monaco-editor/react'],
-          vendor: ['react', 'react-dom', 'zustand', 'motion'],
-        },
-      },
-    },
   },
 });
