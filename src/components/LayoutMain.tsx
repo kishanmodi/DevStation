@@ -110,6 +110,26 @@ export const LayoutMain: React.FC = () => {
     toggleSidebar 
   } = useAppStore();
 
+  // detect small screens and show a warning instead of the full app
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-zinc-900 text-zinc-50 p-4 text-center">
+        <p className="text-lg">
+          This application is designed for desktop screens.
+          Please open it on a larger device or resize your browser.
+        </p>
+      </div>
+    );
+  }
+
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
