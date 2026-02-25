@@ -1,7 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
 # DevStation
 
 **DevStation** is a local developer toolkit built with React, Vite, and Tailwind CSS. It provides a suite of handy utilities such as a code formatter, JSON viewer, HTTP client, kubernetes helper, and more — all accessible through a sidebar UI.
@@ -42,6 +38,14 @@ npm run dev      # starts Vite on http://localhost:3000
 ```bash
 npm run build    # outputs optimized files to `dist/`
 ```
+
+> **Printing/Exporting PDF**
+>
+> The markdown & PDF export tool uses the browser's print dialog (`window.print()`).
+> In some cloud preview environments (Codespaces, GitHub etc.) printing is disabled
+> which will show a warning or simply do nothing. Run the app locally and use the
+> native print dialog to `Save as PDF` if you need to export documents.
+
 
 ### Configuration
 

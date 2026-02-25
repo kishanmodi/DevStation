@@ -13,20 +13,14 @@ export const MdToPdf: React.FC = () => {
   const [md, setMd] = useState('# Project Documentation\n\n## Introduction\nThis is a sample markdown document.\n\n- Feature 1\n- Feature 2\n- Feature 3\n\n### Code Example\n```javascript\nconsole.log("Hello World");\n```');
   const [view, setView] = useState<'edit' | 'preview'>('edit');
   const [previewTheme, setPreviewTheme] = useState<'light' | 'dark'>('light');
-  const [showPrintWarning, setShowPrintWarning] = useState(false);
-
+  // printing works in a normal browser; the preview environment (e.g. Codespaces) may block it.
+  // we simply trigger window.print() so the user can choose 'Save as PDF' from the print dialog.
   const handlePrint = () => {
-    setShowPrintWarning(true);
-    setTimeout(() => setShowPrintWarning(false), 5000);
+    window.print();
   };
 
   return (
     <div className="flex flex-col h-full bg-zinc-950 overflow-hidden relative">
-      {showPrintWarning && (
-        <div className="absolute top-4 right-4 z-50 bg-amber-500 text-black px-4 py-2 rounded-lg shadow-2xl text-xs font-bold animate-bounce">
-          ⚠️ Printing is disabled in the preview environment.
-        </div>
-      )}
       <div className="p-4 border-b border-zinc-800 bg-zinc-900/30 flex items-center justify-between print:hidden">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-zinc-900 p-1 rounded-lg border border-zinc-800">
@@ -81,7 +75,7 @@ export const MdToPdf: React.FC = () => {
           className="flex items-center gap-2 px-6 h-10 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-md transition-all shadow-lg shadow-indigo-500/20"
         >
           <Download size={16} />
-          Export to PDF
+          Print / Save as PDF
         </button>
       </div>
 
