@@ -1,9 +1,7 @@
 import React from 'react';
+import { LayoutMain } from './components/LayoutMain';
 
 export default function App() {
-  return (
-    <div style={{ backgroundColor: 'red', color: 'white', height: '100vh', display: 'flex', alignItems: 'center', justifyCenter: 'center' }}>
-      <h1>HELLO WORLD - APP IS RUNNING</h1>
-    </div>
-  );
+  // render the primary layout which will manage the tool tabs, sidebar, etc.
+  return <LayoutMain />;
 }
