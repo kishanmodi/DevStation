@@ -19,6 +19,20 @@ export const MdToPdf: React.FC = () => {
     window.print();
   };
 
+  const handleDownload = async () => {
+    const element = document.getElementById('markdown-preview');
+    if (!element) return;
+    const { default: html2pdf } = await import('html2pdf.js');
+    const opt = {
+      margin:       0.5,
+      filename:     'document.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  };
+
   return (
     <div className="flex flex-col h-full bg-zinc-950 overflow-hidden relative">
       <div className="p-4 border-b border-zinc-800 bg-zinc-900/30 flex items-center justify-between print:hidden">
@@ -70,13 +84,22 @@ export const MdToPdf: React.FC = () => {
           )}
         </div>
 
-        <button
-          onClick={handlePrint}
-          className="flex items-center gap-2 px-6 h-10 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-md transition-all shadow-lg shadow-indigo-500/20"
-        >
-          <Download size={16} />
-          Print / Save as PDF
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownload}
+            className="flex items-center gap-2 px-4 h-10 bg-green-600 hover:bg-green-500 text-white text-sm font-bold rounded-md transition-all shadow-lg shadow-green-500/20"
+          >
+            <Download size={16} />
+            Download PDF
+          </button>
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-2 px-4 h-10 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-md transition-all shadow-lg shadow-indigo-500/20"
+          >
+            <Layout size={16} />
+            Print
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden">
@@ -92,10 +115,13 @@ export const MdToPdf: React.FC = () => {
             "flex-1 overflow-y-auto p-12 md:p-20 print:p-0 transition-colors duration-300",
             previewTheme === 'light' ? "bg-white" : "bg-zinc-900"
           )}>
-            <div className={cn(
-              "max-w-3xl mx-auto prose prose-zinc",
-              previewTheme === 'dark' && "prose-invert"
-            )}>
+            <div
+              id="markdown-preview"
+              className={cn(
+                "max-w-3xl mx-auto prose prose-zinc",
+                previewTheme === 'dark' && "prose-invert"
+              )}
+            >
               <Markdown>{md}</Markdown>
             </div>
           </div>

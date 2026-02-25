@@ -41,10 +41,16 @@ npm run build    # outputs optimized files to `dist/`
 
 > **Printing/Exporting PDF**
 >
-> The markdown & PDF export tool uses the browser's print dialog (`window.print()`).
-> In some cloud preview environments (Codespaces, GitHub etc.) printing is disabled
-> which will show a warning or simply do nothing. Run the app locally and use the
-> native print dialog to `Save as PDF` if you need to export documents.
+> The markdown tool offers two ways to get a PDF:
+>
+> * **Download PDF** – converts the preview into a file using `html2pdf.js` and
+>   saves it directly; works in any browser environment.
+> * **Print** – opens the browser's print dialog (`window.print()`), so you can
+>   choose “Save as PDF” or send to a printer.
+>
+> In some cloud preview environments (Codespaces, GitHub etc.) the print dialog is
+> disabled. If the “Print” button appears to do nothing, use the **Download PDF**
+> option or run the app locally.
 
 
 ### Configuration
