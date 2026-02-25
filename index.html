@@ -5,9 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DevStation</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      /* show a quick message on mobile screens while the React bundle is loading */
+      #root .mobile-message { display: none; }
+      @media (max-width: 767px) {
+        #root .mobile-message {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          position: absolute;
+          inset: 0;
+          background: #09090b;
+          color: #fafafa;
+          text-align: center;
+          font-family: system-ui, sans-serif;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="mobile-message">
+        This application is designed for desktop screens.
+        Please open it on a larger device or resize your browser.
+      </div>
+    </div>
     <script type="module" src="src/main.tsx"></script>
   </body>
 </html>
