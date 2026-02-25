@@ -1,0 +1,5 @@
+{
+  "name": "DevStation",
+  "description": "A private, local-first developer workstation with essential tools, running entirely in your browser.",
+  "requestFramePermissions": []
+}
